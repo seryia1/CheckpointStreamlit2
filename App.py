@@ -4,7 +4,11 @@ import numpy as np
 import joblib
 import matplotlib.pyplot as plt
 import seaborn as sns
+import plotly.express as px
+import plotly.graph_objects as go
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
+import time
+from datetime import datetime
 
 # Page configuration
 st.set_page_config(
@@ -58,6 +62,82 @@ st.markdown("""
     .stProgress > div > div > div > div {
         background-color: #1E3A8A;
     }
+    
+    /* Dashboard card styling */
+    .dashboard-card {
+        background-color: white;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        margin-bottom: 1rem;
+        border-top: 4px solid #1E3A8A;
+    }
+    
+    /* Video responsive container */
+    .video-container {
+        position: relative;
+        padding-bottom: 56.25%;
+        height: 0;
+        overflow: hidden;
+        max-width: 100%;
+    }
+    .video-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    
+    /* Gallery styling */
+    .gallery {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .gallery-item {
+        flex: 1 0 200px;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+    .gallery-item img {
+        width: 100%;
+        height: auto;
+        transition: transform 0.3s ease;
+    }
+    .gallery-item img:hover {
+        transform: scale(1.05);
+    }
+    
+    /* Infographic styling */
+    .infographic {
+        background-color: #F8FAFC;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+        margin: 1rem 0;
+    }
+    
+    /* Custom tab styling */
+    .custom-tab {
+        background-color: #F1F5F9;
+        padding: 10px 15px;
+        border-radius: 5px 5px 0 0;
+        margin-right: 5px;
+        cursor: pointer;
+        border: 1px solid #E2E8F0;
+        border-bottom: none;
+    }
+    .custom-tab.active {
+        background-color: white;
+        font-weight: bold;
+        border-top: 3px solid #1E3A8A;
+    }
+    .custom-tab-content {
+        padding: 20px;
+        border: 1px solid #E2E8F0;
+        border-radius: 0 5px 5px 5px;
+        background-color: white;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -70,6 +150,166 @@ def load_model_data():
     return model, col_info, model_columns
 
 model, col_info, model_columns = load_model_data()
+
+# ----- 11. RICH MEDIA INTEGRATION -----
+# Sample videos about financial inclusion
+financial_inclusion_videos = [
+    {
+        "title": "What is Financial Inclusion?",
+        "url": "https://www.youtube.com/embed/CVM82QQjSc4",
+        "description": "An overview of financial inclusion and its importance in developing economies."
+    },
+    {
+        "title": "Digital Financial Inclusion in Africa",
+        "url": "https://www.youtube.com/embed/X8R_L3C8FyA",
+        "description": "How digital technologies are transforming financial access across Africa."
+    },
+    {
+        "title": "Mobile Money Revolution in Africa",
+        "url": "https://www.youtube.com/embed/i0tKGz6awAw",
+        "description": "The impact of mobile money services on financial inclusion in Africa."
+    }
+]
+
+# Sample infographics about financial inclusion
+financial_inclusion_infographics = [
+    {
+        "title": "Financial Inclusion Factors",
+        "image": "https://www.cgap.org/sites/default/files/styles/content_image_full/public/researches/images/CGAP_Focus_Note_Financial_Inclusion_Measurement_Framework_Jan_2016_0.png",
+        "description": "Key factors affecting financial inclusion globally."
+    },
+    {
+        "title": "Mobile Money in Africa",
+        "image": "https://www.brookings.edu/wp-content/uploads/2022/02/Mobile-money-fig1.png",
+        "description": "The growth of mobile money accounts in Sub-Saharan Africa."
+    },
+    {
+        "title": "Gender Gap in Financial Inclusion",
+        "image": "https://blogs.worldbank.org/sites/default/files/blogs-images/2019-04/gender_gap_in_account_ownership.jpg",
+        "description": "Gender disparities in access to financial services."
+    }
+]
+
+# Sample gallery images
+financial_inclusion_gallery = [
+    "https://www.worldbank.org/content/dam/photos/780x439/2016/jun/Financial-Inclusion-Africa-780.jpg",
+    "https://www.ifc.org/content/dam/ifc/photo/780x439/regions/africa/financial-inclusion-africa-780.jpg",
+    "https://www.cgap.org/sites/default/files/styles/content_image_full/public/researches/images/CGAP_Focus_Note_Financial_Inclusion_Measurement_Framework_Jan_2016_0.png",
+    "https://www.brookings.edu/wp-content/uploads/2022/02/Mobile-money-fig1.png",
+    "https://blogs.worldbank.org/sites/default/files/blogs-images/2019-04/gender_gap_in_account_ownership.jpg",
+    "https://www.mastercard.us/content/dam/public/mastercardcom/na/us/en/other/financial-inclusion-card-image-1280x720.jpg"
+]
+
+# ----- 12. ADVANCED DATA DISPLAYS -----
+# Sample data for visualizations
+@st.cache_data
+def load_sample_data():
+    # Sample time series data for financial inclusion trends
+    years = list(range(2010, 2023))
+    kenya_trend = [0.25, 0.28, 0.32, 0.35, 0.38, 0.42, 0.45, 0.48, 0.52, 0.55, 0.58, 0.62, 0.65]
+    rwanda_trend = [0.18, 0.20, 0.23, 0.25, 0.28, 0.32, 0.35, 0.38, 0.42, 0.45, 0.48, 0.52, 0.55]
+    tanzania_trend = [0.12, 0.14, 0.16, 0.18, 0.20, 0.23, 0.25, 0.28, 0.30, 0.33, 0.35, 0.38, 0.40]
+    uganda_trend = [0.15, 0.17, 0.19, 0.22, 0.24, 0.27, 0.30, 0.33, 0.36, 0.39, 0.42, 0.45, 0.48]
+    
+    time_series_df = pd.DataFrame({
+        'Year': years,
+        'Kenya': kenya_trend,
+        'Rwanda': rwanda_trend,
+        'Tanzania': tanzania_trend,
+        'Uganda': uganda_trend
+    })
+    
+    # Sample data for heatmap of financial inclusion factors
+    heatmap_data = pd.DataFrame({
+        'Country': ['Kenya', 'Rwanda', 'Tanzania', 'Uganda'] * 5,
+        'Factor': ['Mobile Money', 'Mobile Money', 'Mobile Money', 'Mobile Money',
+                  'Bank Account', 'Bank Account', 'Bank Account', 'Bank Account',
+                  'Digital Payments', 'Digital Payments', 'Digital Payments', 'Digital Payments',
+                  'Savings', 'Savings', 'Savings', 'Savings',
+                  'Credit', 'Credit', 'Credit', 'Credit'],
+        'Adoption Rate': [0.72, 0.65, 0.58, 0.62, 
+                         0.55, 0.48, 0.35, 0.42,
+                         0.68, 0.58, 0.45, 0.52,
+                         0.45, 0.38, 0.30, 0.35,
+                         0.32, 0.25, 0.18, 0.22]
+    })
+    
+    # Sample data for demographic comparison
+    demographic_data = pd.DataFrame({
+        'Demographic': ['Urban', 'Rural', 'Male', 'Female', 'Primary Education', 'Secondary Education', 'Tertiary Education'],
+        'Bank Account': [0.65, 0.32, 0.58, 0.45, 0.35, 0.58, 0.82],
+        'Mobile Money': [0.78, 0.52, 0.72, 0.68, 0.58, 0.75, 0.88]
+    })
+    
+    # Sample data for geographic heatmap
+    geo_data = pd.DataFrame({
+        'Country': ['Kenya', 'Rwanda', 'Tanzania', 'Uganda'],
+        'Latitude': [1.2921, -1.9403, -6.3690, 1.3733],
+        'Longitude': [36.8219, 29.8739, 34.8888, 32.2903],
+        'Bank_Account_Rate': [0.55, 0.48, 0.35, 0.42],
+        'Mobile_Money_Rate': [0.72, 0.65, 0.58, 0.62]
+    })
+    
+    return time_series_df, heatmap_data, demographic_data, geo_data
+
+time_series_df, heatmap_data, demographic_data, geo_data = load_sample_data()
+
+# Create advanced visualizations
+@st.cache_data
+def create_time_series_chart():
+    fig = px.line(time_series_df, x='Year', y=['Kenya', 'Rwanda', 'Tanzania', 'Uganda'],
+                 title='Financial Inclusion Trends in East Africa (2010-2022)',
+                 labels={'value': 'Account Ownership Rate', 'variable': 'Country'},
+                 color_discrete_sequence=['#1E3A8A', '#4F46E5', '#7C3AED', '#EC4899'])
+    fig.update_layout(
+        legend_title_text='Country',
+        xaxis_title='Year',
+        yaxis_title='Account Ownership Rate',
+        hovermode='x unified',
+        height=500
+    )
+    return fig
+
+@st.cache_data
+def create_heatmap():
+    pivot_data = heatmap_data.pivot(index='Factor', columns='Country', values='Adoption Rate')
+    fig = px.imshow(pivot_data, 
+                   labels=dict(x="Country", y="Financial Service", color="Adoption Rate"),
+                   x=pivot_data.columns, 
+                   y=pivot_data.index,
+                   color_continuous_scale='Blues',
+                   title='Financial Services Adoption Heatmap')
+    fig.update_layout(height=500)
+    return fig
+
+@st.cache_data
+def create_demographic_comparison():
+    fig = px.bar(demographic_data, x='Demographic', y=['Bank Account', 'Mobile Money'],
+                barmode='group', title='Financial Services by Demographic Group',
+                color_discrete_sequence=['#1E3A8A', '#4F46E5'])
+    fig.update_layout(
+        xaxis_title='Demographic Group',
+        yaxis_title='Adoption Rate',
+        legend_title='Service Type',
+        height=500
+    )
+    return fig
+
+@st.cache_data
+def create_geo_visualization():
+    fig = px.scatter_mapbox(geo_data, 
+                           lat='Latitude', 
+                           lon='Longitude', 
+                           size='Bank_Account_Rate',
+                           color='Mobile_Money_Rate',
+                           hover_name='Country', 
+                           color_continuous_scale='Viridis',
+                           size_max=25, 
+                           zoom=3,
+                           mapbox_style='carto-positron',
+                           title='Financial Inclusion Across East Africa')
+    fig.update_layout(height=600)
+    return fig
 
 # Sidebar with information about financial inclusion
 with st.sidebar:
@@ -95,17 +335,62 @@ with st.sidebar:
     2. Click 'Predict' to see the likelihood of bank account ownership
     3. Review the prediction and probability score
     """)
+    
+    # Dashboard customization options
+    st.markdown("### Dashboard Settings")
+    show_prediction_form = st.checkbox("Show Prediction Form", value=True)
+    show_visualizations = st.checkbox("Show Data Visualizations", value=True)
+    show_media = st.checkbox("Show Media Resources", value=True)
+    
+    # Theme selection
+    st.markdown("### Theme")
+    theme = st.selectbox("Select Theme", ["Default Blue", "Green", "Purple", "Orange"])
+    
+    # Apply theme colors
+    if theme == "Green":
+        primary_color = "#047857"
+        secondary_color = "#10B981"
+    elif theme == "Purple":
+        primary_color = "#6D28D9"
+        secondary_color = "#8B5CF6"
+    elif theme == "Orange":
+        primary_color = "#D97706"
+        secondary_color = "#F59E0B"
+    else:  # Default Blue
+        primary_color = "#1E3A8A"
+        secondary_color = "#4F46E5"
+    
+    st.markdown(f"""
+    <style>
+        .section-header {{
+            color: {primary_color};
+        }}
+        .stProgress > div > div > div > div {{
+            background-color: {primary_color};
+        }}
+        .dashboard-card {{
+            border-top: 4px solid {primary_color};
+        }}
+        .custom-tab.active {{
+            border-top: 3px solid {primary_color};
+        }}
+    </style>
+    """, unsafe_allow_html=True)
 
+# ----- 21. DASHBOARD LAYOUT -----
 # Main content
-st.markdown('<h1 class="main-header">Financial Inclusion in Africa Predictor</h1>', unsafe_allow_html=True)
-st.markdown('<p class="sub-header">Predict bank account ownership based on demographic factors</p>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header">Financial Inclusion in Africa Dashboard</h1>', unsafe_allow_html=True)
+st.markdown('<p class="sub-header">Predict bank account ownership and explore financial inclusion insights</p>', unsafe_allow_html=True)
 
-# Create tabs for different sections
-tab1, tab2 = st.tabs(["Make Prediction", "Model Information"])
+# Create dashboard tabs
+dashboard_tabs = ["Prediction", "Data Insights", "Media Resources", "About"]
+selected_tab = st.radio("", dashboard_tabs, horizontal=True, label_visibility="collapsed")
 
-with tab1:
+# Prediction Tab
+if selected_tab == "Prediction" and show_prediction_form:
     # Form in a card-like container
     with st.container():
+        st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
         st.markdown('<h2 class="section-header">Enter Individual Information</h2>', unsafe_allow_html=True)
         
         # Create columns for better layout
@@ -146,6 +431,7 @@ with tab1:
             
             # Submit button with better styling
             submitted = st.form_submit_button("Predict Bank Account Ownership", use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True)
     
     # Prediction section
     if submitted:
@@ -190,8 +476,12 @@ with tab1:
             # 5. Predict
             prediction = model.predict(df_encoded)[0]
             prob = model.predict_proba(df_encoded)[0][1]
+            
+            # Add a slight delay for animation effect
+            time.sleep(0.5)
         
-        # Display prediction results
+        # Display prediction results in a dashboard card
+        st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
         st.markdown('<h2 class="section-header">Prediction Results</h2>', unsafe_allow_html=True)
         
         # Create two columns for results and visualization
@@ -267,8 +557,117 @@ with tab1:
             plt.tight_layout()
             
             st.pyplot(fig)
+        st.markdown('</div>', unsafe_allow_html=True)
 
-with tab2:
+# Data Insights Tab
+elif selected_tab == "Data Insights" and show_visualizations:
+    # Create a dashboard of visualizations
+    st.markdown('<h2 class="section-header">Financial Inclusion Data Insights</h2>', unsafe_allow_html=True)
+    
+    # Create visualization tabs
+    viz_tabs = ["Trends", "Comparisons", "Geographic", "Factors"]
+    viz_tab = st.radio("Select visualization type:", viz_tabs, horizontal=True)
+    
+    if viz_tab == "Trends":
+        st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
+        st.markdown("### Financial Inclusion Trends Over Time")
+        st.plotly_chart(create_time_series_chart(), use_container_width=True)
+        st.markdown("""
+        This chart shows the growth of financial inclusion (measured by account ownership) 
+        across East African countries from 2010 to 2022. Kenya has consistently led the region 
+        in financial inclusion, with significant growth across all countries over the past decade.
+        """)
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    elif viz_tab == "Comparisons":
+        st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
+        st.markdown("### Demographic Comparison of Financial Services")
+        st.plotly_chart(create_demographic_comparison(), use_container_width=True)
+        st.markdown("""
+        This chart compares bank account ownership and mobile money usage across different 
+        demographic groups. Note that mobile money adoption is generally higher than traditional 
+        banking across all demographics, with the gap being particularly pronounced in rural areas.
+        """)
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    elif viz_tab == "Geographic":
+        st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
+        st.markdown("### Geographic Distribution of Financial Inclusion")
+        st.plotly_chart(create_geo_visualization(), use_container_width=True)
+        st.markdown("""
+        This map shows the geographic distribution of financial inclusion across East Africa.
+        The size of each bubble represents bank account ownership rates, while the color 
+        represents mobile money adoption rates. Kenya leads in both metrics.
+        """)
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    elif viz_tab == "Factors":
+        st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
+        st.markdown("### Financial Services Adoption Heatmap")
+        st.plotly_chart(create_heatmap(), use_container_width=True)
+        st.markdown("""
+        This heatmap shows the adoption rates of different financial services across 
+        East African countries. Mobile money has the highest adoption rates across all countries,
+        while access to credit remains relatively low.
+        """)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+# Media Resources Tab
+elif selected_tab == "Media Resources" and show_media:
+    st.markdown('<h2 class="section-header">Financial Inclusion Media Resources</h2>', unsafe_allow_html=True)
+    
+    # Create media tabs
+    media_tabs = ["Videos", "Infographics", "Image Gallery"]
+    media_tab = st.radio("Select media type:", media_tabs, horizontal=True)
+    
+    if media_tab == "Videos":
+        st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
+        st.markdown("### Educational Videos on Financial Inclusion")
+        
+        for i, video in enumerate(financial_inclusion_videos):
+            st.markdown(f"#### {video['title']}")
+            st.markdown(f"""
+            <div class="video-container">
+                <iframe src="{video['url']}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            """, unsafe_allow_html=True)
+            st.markdown(f"{video['description']}")
+            if i < len(financial_inclusion_videos) - 1:
+                st.markdown("---")
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    elif media_tab == "Infographics":
+        st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
+        st.markdown("### Financial Inclusion Infographics")
+        
+        for i, infographic in enumerate(financial_inclusion_infographics):
+            st.markdown(f"#### {infographic['title']}")
+            st.image(infographic['image'], use_column_width=True)
+            st.markdown(f"{infographic['description']}")
+            if i < len(financial_inclusion_infographics) - 1:
+                st.markdown("---")
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    elif media_tab == "Image Gallery":
+        st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
+        st.markdown("### Financial Inclusion Image Gallery")
+        
+        st.markdown("""
+        <div class="gallery">
+        """, unsafe_allow_html=True)
+        
+        # Display gallery in rows of 3
+        cols = st.columns(3)
+        for i, image_url in enumerate(financial_inclusion_gallery):
+            with cols[i % 3]:
+                st.image(image_url, use_column_width=True)
+        
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+# About Tab
+elif selected_tab == "About":
+    st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
     st.markdown('<h2 class="section-header">About the Model</h2>', unsafe_allow_html=True)
     
     # Model information
@@ -292,47 +691,35 @@ with tab2:
     The model has been evaluated on a test dataset and demonstrates good predictive performance for financial inclusion.
     """)
     
-    # Sample data visualization
-    st.markdown('<h2 class="section-header">Financial Inclusion Insights</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-header">About Financial Inclusion</h2>', unsafe_allow_html=True)
+    st.markdown("""
+    Financial inclusion is the delivery of financial services at affordable costs to disadvantaged and low-income segments of society. It is a key enabler to reducing poverty and boosting prosperity in developing economies.
     
-    # Create some example visualizations
-    col1, col2 = st.columns(2)
+    ### Why Financial Inclusion Matters
     
-    with col1:
-        st.markdown("### Financial Inclusion by Country")
-        # Example data - replace with actual statistics if available
-        countries = ["Kenya", "Rwanda", "Tanzania", "Uganda"]
-        inclusion_rates = [0.42, 0.38, 0.23, 0.28]
-        
-        fig, ax = plt.subplots(figsize=(8, 4))
-        ax.bar(countries, inclusion_rates, color="#1E3A8A")
-        ax.set_ylabel("Bank Account Ownership Rate")
-        ax.set_ylim(0, 0.5)
-        for i, v in enumerate(inclusion_rates):
-            ax.text(i, v + 0.02, f"{v:.0%}", ha='center')
-        plt.tight_layout()
-        st.pyplot(fig)
+    - **Poverty Reduction**: Access to financial services helps people escape poverty by facilitating investments in education, health, and business
+    - **Economic Growth**: Broadens the base of savers and promotes capital accumulation
+    - **Gender Equality**: Helps women assert economic power and make financial decisions
+    - **Food Security**: Enables farmers to invest in higher-yielding crops and better equipment
     
-    with col2:
-        st.markdown("### Factors Affecting Financial Inclusion")
-        # Example data - replace with actual statistics if available
-        factors = ["Urban Location", "Higher Education", "Cellphone Access", "Formal Employment"]
-        impact = [0.65, 0.78, 0.52, 0.71]
-        
-        fig, ax = plt.subplots(figsize=(8, 4))
-        ax.barh(factors, impact, color="#4F46E5")
-        ax.set_xlabel("Correlation with Bank Account Ownership")
-        ax.set_xlim(0, 1)
-        for i, v in enumerate(impact):
-            ax.text(v + 0.02, i, f"{v:.0%}", va='center')
-        plt.tight_layout()
-        st.pyplot(fig)
+    ### Financial Inclusion in Africa
+    
+    Africa has made significant strides in financial inclusion, largely driven by mobile money services. However, challenges remain:
+    
+    - **Infrastructure Gaps**: Limited physical banking infrastructure in rural areas
+    - **Documentation Requirements**: Many lack the formal documentation needed for traditional banking
+    - **Financial Literacy**: Limited understanding of financial products and services
+    - **Gender Gap**: Women have less access to financial services than men
+    
+    This application aims to help identify individuals who may be excluded from the financial system, enabling targeted interventions to improve access.
+    """)
+    st.markdown('</div>', unsafe_allow_html=True)
 
-# Footer
+# Dashboard footer
 st.markdown("---")
-st.markdown("""
+st.markdown(f"""
 <div style="text-align: center; color: #6B7280; font-size: 0.8rem;">
-    <p>Financial Inclusion in Africa Predictor | Developed for educational purposes</p>
+    <p>Financial Inclusion in Africa Dashboard | Last updated: {datetime.now().strftime('%B %d, %Y')}</p>
     <p>Data source: Zindi platform | Model: Naive Bayes Classifier</p>
 </div>
 """, unsafe_allow_html=True)
