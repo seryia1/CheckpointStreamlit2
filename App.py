@@ -8,6 +8,8 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 model = joblib.load("naive_bayes_model.joblib")
 col_info = joblib.load("unique_elements_dict_naivebayes.joblib")
 
+model_columns = joblib.load("model_columns.joblib")
+
 # -----------------------
 # UI: User Input Form
 # -----------------------
