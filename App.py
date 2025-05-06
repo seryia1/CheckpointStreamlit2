@@ -5,14 +5,14 @@ import joblib
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
 # Load saved model & references
-model = joblib.load("naive_bayes_model.joblib)
+model = joblib.load("naive_bayes_model.joblib")
 col_info = joblib.load("unique_elements_dict_naivebayes.joblib")
 
 # -----------------------
 # UI: User Input Form
 # -----------------------
 with st.form("predict_form"):
-    st.title("📱 Churn Prediction (Expresso Users)")
+    st.title("📱🏦 Financial Inclusion in Africa App detector")
 
     # Dropdown selectors for categorical values
     country = st.selectbox("Country", col_info["country"])
