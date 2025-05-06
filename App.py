@@ -42,13 +42,16 @@ with st.form("predict_form"):
 if submitted:
     # 1. Raw input to DataFrame
     df = pd.DataFrame([{
-        "country": country,
+        
+        
         "year": year,
         "bank_account": bank_account,
-        "location_type": location_type,
+        
         "cellphone_access": cellphone_access,
         "household_size": household_size,
         "age_of_respondent": age_of_respondent,
+        "country": country,
+        "location_type": location_type,
         "gender_of_respondent": gender_of_respondent,
         "relationship_with_head": relationship_with_head,
         "marital_status": marital_status,
