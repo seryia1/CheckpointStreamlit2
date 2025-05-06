@@ -42,11 +42,7 @@ with st.form("predict_form"):
 if submitted:
     # 1. Raw input to DataFrame
     df = pd.DataFrame([{
-        
-        
         "year": year,
-        
-        
         "cellphone_access": cellphone_access,
         "household_size": household_size,
         "age_of_respondent": age_of_respondent,
@@ -58,27 +54,31 @@ if submitted:
         "education_level": education_level,
         "job_type": job_type
     }])
+
+    # 2. Binary mapping
     binary_map = {"Yes": 1, "No": 0}
     df["cellphone_access"] = df["cellphone_access"].map(binary_map)
 
-# Identify categorical columns to one-hot encode (excluding already encoded or numeric columns)
-    categorical_cols = ['country',
- 
-    'bank_account',
-    'location_type',
-    'cellphone_access',
-    'gender_of_respondent',
-    'relationship_with_head',
-    'marital_status',
-    'education_level',
-    'job_type']
+    # 3. One-hot encoding (drop bank_account here)
+    categorical_cols = [
+        'country',
+        'location_type',
+        'gender_of_respondent',
+        'relationship_with_head',
+        'marital_status',
+        'education_level',
+        'job_type'
+    ]
 
-# Apply one-hot encoding
     df_encoded = pd.get_dummies(df, columns=categorical_cols, drop_first=True)
     df_encoded = df_encoded.astype(int)
-    df_encoded
+
+    # 4. Reindex to match model's expected input columns
+    df_encoded = df_encoded.reindex(columns=model_columns, fill_value=0)
+
+    # 5. Predict
     prediction = model.predict(df_encoded)[0]
     prob = model.predict_proba(df_encoded)[0][1]
 
-    st.success("✅ Churn" if prediction == 1 else "❌ Has No Bank Account")
-    st.info(f"📈 Churn Probability: {prob:.2%}")
+    st.success("✅ Has a Bank Account" if prediction == 1 else "❌ No Bank Account")
+    st.info(f"📈 Probability: {prob:.2%}")
