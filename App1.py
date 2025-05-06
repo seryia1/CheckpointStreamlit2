@@ -156,17 +156,17 @@ model, col_info, model_columns = load_model_data()
 financial_inclusion_videos = [
     {
         "title": "What is Financial Inclusion?",
-        "url": "https://www.youtube.com/embed/CVM82QQjSc4",
+        "url": "https://www.youtube.com/watch?v=cAxFBzHV6tc",
         "description": "An overview of financial inclusion and its importance in developing economies."
     },
     {
         "title": "Digital Financial Inclusion in Africa",
-        "url": "https://www.youtube.com/embed/X8R_L3C8FyA",
+        "url": "https://www.youtube.com/watch?v=4rtJHeR2EIc",
         "description": "How digital technologies are transforming financial access across Africa."
     },
     {
         "title": "Mobile Money Revolution in Africa",
-        "url": "https://www.youtube.com/embed/i0tKGz6awAw",
+        "url": "https://www.youtube.com/watch?v=Ava9I6S2leg",
         "description": "The impact of mobile money services on financial inclusion in Africa."
     }
 ]
@@ -175,7 +175,7 @@ financial_inclusion_videos = [
 financial_inclusion_infographics = [
     {
         "title": "Financial Inclusion Factors",
-        "image": "https://ieg.worldbankgroup.org/sites/default/files/Data/Evaluation/files/infographic-financial-inclusion-foothold-ladder-prosperity.png",
+        "image": "https://fastercapital.co/i/Financial-Inclusion-Score--How-to-Access-and-Benefit-from-Financial-Services-and-Products--Factors-Affecting-Financial-Inclusion-Score.webp",
         "description": "Key factors affecting financial inclusion globally."
     },
     {
@@ -185,20 +185,12 @@ financial_inclusion_infographics = [
     },
     {
         "title": "Gender Gap in Financial Inclusion",
-        "image": "https://www.imf.org/-/media/Files/Publications/Fandd/Article/2019/March/global-gender-gap-report-infographic-wef-picture.ashx",
+        "image": "https://blogs.worldbank.org/content/dam/sites/blogs/img/detail/mgr/unbanked.jpg",
         "description": "Gender disparities in access to financial services."
     }
 ]
 
-# Sample gallery images
-financial_inclusion_gallery = [
-    "https://www.worldbank.org/content/dam/photos/780x439/2016/jun/Financial-Inclusion-Africa-780.jpg",
-    "https://www.ifc.org/content/dam/ifc/photo/780x439/regions/africa/financial-inclusion-africa-780.jpg",
-    "https://www.cgap.org/sites/default/files/styles/content_image_full/public/researches/images/CGAP_Focus_Note_Financial_Inclusion_Measurement_Framework_Jan_2016_0.png",
-    "https://www.brookings.edu/wp-content/uploads/2022/02/Mobile-money-fig1.png",
-    "https://blogs.worldbank.org/sites/default/files/blogs-images/2019-04/gender_gap_in_account_ownership.jpg",
-    "https://www.mastercard.us/content/dam/public/mastercardcom/na/us/en/other/financial-inclusion-card-image-1280x720.jpg"
-]
+
 
 # ----- 12. ADVANCED DATA DISPLAYS -----
 # Sample data for visualizations
