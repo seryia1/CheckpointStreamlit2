@@ -65,6 +65,7 @@ if submitted:
 # Apply one-hot encoding
     df_encoded = pd.get_dummies(df, columns=categorical_cols, drop_first=True)
     df_encoded = df_encoded.astype(int)
+    df_encoded
     prediction = model.predict(df_encoded)[0]
     prob = model.predict_proba(df_encoded)[0][1]
 
