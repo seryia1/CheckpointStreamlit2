@@ -17,7 +17,7 @@ with st.form("predict_form"):
     # Dropdown selectors for categorical values
     country = st.selectbox("Country", col_info["country"])
     year = st.selectbox("Year", col_info["year"])
-    bank_account = st.selectbox("Bank Account", col_info["bank_account"])
+    
     location_type = st.selectbox("Location Type", col_info["location_type"])
     cellphone_access = st.selectbox("Cellphone Access", col_info["cellphone_access"])
     
@@ -45,7 +45,7 @@ if submitted:
         
         
         "year": year,
-        "bank_account": bank_account,
+        
         
         "cellphone_access": cellphone_access,
         "household_size": household_size,
@@ -59,11 +59,19 @@ if submitted:
         "job_type": job_type
     }])
     binary_map = {"Yes": 1, "No": 0}
-    df["bank_account"] = df["bank_account"].map(binary_map)  # Target? If so, separate later
     df["cellphone_access"] = df["cellphone_access"].map(binary_map)
 
 # Identify categorical columns to one-hot encode (excluding already encoded or numeric columns)
-    categorical_cols = df.select_dtypes(include="object").columns.tolist()
+    categorical_cols = ['country',
+ 
+    'bank_account',
+    'location_type',
+    'cellphone_access',
+    'gender_of_respondent',
+    'relationship_with_head',
+    'marital_status',
+    'education_level',
+    'job_type']
 
 # Apply one-hot encoding
     df_encoded = pd.get_dummies(df, columns=categorical_cols, drop_first=True)
