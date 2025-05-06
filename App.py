@@ -305,7 +305,7 @@ def create_geo_visualization():
 
 # Sidebar with information about financial inclusion
 with st.sidebar:
-    st.image("https://www.worldbank.org/content/dam/photos/780x439/2022/apr/Financial-Inclusion-Africa-780.jpg", use_column_width=True)
+    st.image("https://www.worldbank.org/content/dam/photos/780x439/2022/apr/Financial-Inclusion-Africa-780.jpg", use_container_width=True)
     st.markdown("## About Financial Inclusion")
     st.markdown("""
     Financial inclusion means that individuals and businesses have access to useful and affordable financial products and services that meet their needs – transactions, payments, savings, credit and insurance – delivered in a responsible and sustainable way.
@@ -634,7 +634,7 @@ elif selected_tab == "Media Resources" and show_media:
         
         for i, infographic in enumerate(financial_inclusion_infographics):
             st.markdown(f"#### {infographic['title']}")
-            st.image(infographic['image'], use_column_width=True)
+            st.image(infographic['image'], use_container_width=True)
             st.markdown(f"{infographic['description']}")
             if i < len(financial_inclusion_infographics) - 1:
                 st.markdown("---")
@@ -652,7 +652,7 @@ elif selected_tab == "Media Resources" and show_media:
         cols = st.columns(3)
         for i, image_url in enumerate(financial_inclusion_gallery):
             with cols[i % 3]:
-                st.image(image_url, use_column_width=True)
+                st.image(image_url, use_container_width=True)
         
         st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
